@@ -9,16 +9,11 @@ const KEY = "e53eb6dc";
 
 export default function App() {
   const [movies, setMovies] = useState([]);
+  const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState(null);
-
-  // const [watched, setWatched] = useState([]);
-  const [watched, setWatched] = useState(function () {
-    const storedValue = localStorage.getItem("watched");
-    return JSON.parse(storedValue);
-  });
 
   const handleSelectedMovie = (id) =>
     setSelectedId((selectedId) => (id === selectedId ? null : id));
@@ -29,13 +24,6 @@ export default function App() {
 
   const handleDeleteWatched = (id) =>
     setWatched((watched) => watched.filter((movie) => movie.imdbID !== id));
-
-  useEffect(
-    function () {
-      localStorage.setItem("watched", JSON.stringify(watched));
-    },
-    [watched]
-  );
 
   useEffect(
     function () {
@@ -243,21 +231,6 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
     Genre: genre,
   } = movie;
 
-  // const [isTop, setIsTop] = useState(imdbRating > 8);
-  // console.log(isTop);
-
-  // useEffect(
-  //   function () {
-  //     setIsTop(imdbRating > 8);
-  //   },
-  //   [imdbRating]
-  // );
-
-  const isTop = imdbRating > 8;
-  console.log(isTop);
-
-  // const [avgRating, setAvgRating] = useState(0);
-
   function handleAdd() {
     const newWatchedMovie = {
       imdbID: selectedId,
@@ -271,8 +244,6 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
 
     onAddWatched(newWatchedMovie);
     onCloseMovie();
-    // setAvgRating(Number(imdbRating));
-    // setAvgRating((avgRating) => (avgRating + userRating) / 2);
   }
 
   // closing the movie details with the escape key
@@ -401,7 +372,7 @@ function WatchedSummary({ watched }) {
         </p>
         <p>
           <span>⏳</span>
-          <span>{avgRuntime.toFixed(2)} min</span>
+          <span>{avgRuntime} min</span>
         </p>
       </div>
     </div>
@@ -445,7 +416,7 @@ function WatchedMovie({ movie, onDeleteWatched }) {
           className="btn-delete"
           onClick={() => onDeleteWatched(movie.imdbID)}
         >
-          &#10005;
+          -
         </button>
       </div>
     </li>
