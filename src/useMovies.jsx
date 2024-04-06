@@ -50,5 +50,5 @@ export function useMovies(query, callBack) {
     },
     [query, callBack]
   );
-  return [movies, isLoading, error];
+  return { movies, isLoading, error };
 }
