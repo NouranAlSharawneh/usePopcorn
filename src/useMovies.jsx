@@ -30,7 +30,6 @@ export function useMovies(query, callBack) {
           setMovies(data.Search);
           setError("");
         } catch (err) {
-          console.log(err.message);
           if (err.name !== "AbortError") setError(err.message);
         } finally {
           setIsLoading(false);
